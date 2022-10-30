@@ -3,11 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/custom_preview.xml" value="0.1337386018237082" />
+        <entry key="../../../../layout/custom_preview.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/current_date.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/custom_item_calendar.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/default_state_item.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/focused_state_item.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/item_state_define.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/pressed_state_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/calendar_layout.xml" value="0.165" />
         <entry key="app/src/main/res/layout/event_dislay_layout.xml" value="0.11" />
-        <entry key="app/src/main/res/layout/item_calendar_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_calendar_layout.xml" value="0.165" />
         <entry key="app/src/main/res/layout/new_event_layout.xml" value="0.1" />
       </map>
     </option>

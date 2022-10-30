@@ -2,25 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="80dp"
+    android:layout_marginTop="10dp">
 
     <TextView
         android:id="@+id/singleCalendarDay"
-        android:layout_width="40dp"
-        android:layout_height="30dp"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="1"
-        android:paddingStart="10sp"
+        android:textColor="@color/black"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="@drawable/item_state_define"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/eventID"
+        android:layout_width="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="18sp"
-        android:id="@+id/eventID"
-        android:textColor="@android:color/holo_purple"/>
+        android:textColor="@android:color/holo_purple"
+        android:textSize="18sp" />
 
 </LinearLayout>
