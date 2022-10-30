@@ -46,7 +46,8 @@ public class CustomCalendarGridView extends LinearLayout {
 
     DBSelector dbSelector;
     MyArrayAdapter myArrayAdapter;
-
+    int lastClicked = -1;
+    Calendar curCal = Calendar.getInstance(Locale.ENGLISH);
     public CustomCalendarGridView(Context context) {
         super(context);
 
@@ -94,6 +95,14 @@ public class CustomCalendarGridView extends LinearLayout {
                 eventTimeSelector = (ImageButton) newView.findViewById(R.id.timeSetForEvent);
                 eventTime = (TextView) newView.findViewById(R.id.timeEvent);
                 eventDone = (Button) newView.findViewById(R.id.doneBtn);
+
+                for(int i = 0; i < parent.getChildCount();i++){
+                    TextView textView = parent.getChildAt(i).findViewById(R.id.singleCalendarDay);
+                    textView.setBackgroundResource(R.drawable.default_state_item);
+
+                }
+                view.findViewById(R.id.singleCalendarDay).setBackgroundResource(R.drawable.pressed_state_item);
+                lastClicked = position;
 
                 eventTimeSelector.setOnClickListener(new OnClickListener() {
                     @Override
@@ -162,7 +171,7 @@ public class CustomCalendarGridView extends LinearLayout {
             monthCal.add(Calendar.DAY_OF_MONTH, 1);
         });
 
-        myArrayAdapter = new MyArrayAdapter(context,dateList,eventsList,calendar);
+        myArrayAdapter = new MyArrayAdapter(context,dateList,eventsList,calendar,lastClicked,curCal);
         gridView.setAdapter(myArrayAdapter);
     }
 }
