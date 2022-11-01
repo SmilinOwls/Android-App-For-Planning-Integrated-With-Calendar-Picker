@@ -19,10 +19,11 @@
 
     <TextView
         android:id="@+id/eventID"
-        android:layout_width="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:textColor="@android:color/holo_purple"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>
