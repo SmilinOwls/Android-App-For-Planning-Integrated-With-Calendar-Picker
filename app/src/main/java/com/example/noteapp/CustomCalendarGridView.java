@@ -107,40 +107,31 @@ public class CustomCalendarGridView extends LinearLayout {
                 view.findViewById(R.id.singleCalendarDay).setBackgroundResource(R.drawable.pressed_state_item);
                 lastClicked = position;
 
-                eventTimeSelector.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Calendar calendar = Calendar.getInstance();
-                        int hours = calendar.get(Calendar.HOUR_OF_DAY);
-                        int minutes = calendar.get(Calendar.MINUTE);
+                eventTimeSelector.setOnClickListener(v -> {
+                    Calendar calendar = Calendar.getInstance();
+                    int hours = calendar.get(Calendar.HOUR_OF_DAY);
+                    int minutes = calendar.get(Calendar.MINUTE);
 
-                        TimePickerDialog timePickerDialog =
-                                new TimePickerDialog(newView.getContext(), R.style.MyAlertDialogStyle, new TimePickerDialog.OnTimeSetListener() {
-                                    @Override
-                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                        Calendar calendar1 = Calendar.getInstance();
-                                        calendar1.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                                        calendar1.set(Calendar.MINUTE,minute);
-                                        calendar1.setTimeZone(TimeZone.getDefault());
-                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("K:mm a",Locale.ENGLISH);
-                                        eventTime.setText(simpleDateFormat.format(calendar1.getTime()));
-                                    }
-                                },hours,minutes,false);
-                        timePickerDialog.show();
-                    }
+                    TimePickerDialog timePickerDialog =
+                            new TimePickerDialog(newView.getContext(), R.style.MyAlertDialogStyle, (view1, hourOfDay, minute) -> {
+                                Calendar calendar1 = Calendar.getInstance();
+                                calendar1.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                                calendar1.set(Calendar.MINUTE,minute);
+                                calendar1.setTimeZone(TimeZone.getDefault());
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("K:mm a",Locale.ENGLISH);
+                                eventTime.setText(simpleDateFormat.format(calendar1.getTime()));
+                            },hours,minutes,false);
+                    timePickerDialog.show();
                 });
 
-                eventDone.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Save event which has been done
-                        // then store it in SQLite database
-                        Date selectedDate = dateList.get(position);
-                        dbSelector = new DBSelector(context);
-                        dbSelector.SaveEvent(eventName.getText().toString(),eventTime.getText().toString(),simpleDateFormat.format(selectedDate),monthFormat.format(selectedDate),yearFormat.format(selectedDate),dbSelector.getWritableDatabase());
-                        updateCalendar();
-                        alertDialog.dismiss();
-                    }
+                eventDone.setOnClickListener(v -> {
+                    // Save event which has been done
+                    // then store it in SQLite database
+                    Date selectedDate = dateList.get(position);
+                    dbSelector = new DBSelector(context);
+                    dbSelector.SaveEvent(eventName.getText().toString(),eventTime.getText().toString(),simpleDateFormat.format(selectedDate),monthFormat.format(selectedDate),yearFormat.format(selectedDate),dbSelector.getWritableDatabase());
+                    updateCalendar();
+                    alertDialog.dismiss();
                 });
 
                 alertDialog = builder.create();
