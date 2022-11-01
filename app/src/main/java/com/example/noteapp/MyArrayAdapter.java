@@ -2,6 +2,7 @@ package com.example.noteapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,21 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.IntStream;
 
 public class MyArrayAdapter extends ArrayAdapter {
 
@@ -41,7 +50,7 @@ public class MyArrayAdapter extends ArrayAdapter {
         curYear = calendar.get(Calendar.YEAR);
     }
 
-    @SuppressLint("CutPasteId")
+    @SuppressLint({"CutPasteId", "SetTextI18n"})
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -78,10 +87,35 @@ public class MyArrayAdapter extends ArrayAdapter {
 
         if(curYear == year && curMonth == month && curDay == day){
             templateDate.setBackgroundResource(R.drawable.current_date);
+            templateDate.setTextColor(getContext().getResources().getColor(R.color.white));
         }
 
-        TextView textView = (TextView) view.findViewById(R.id.singleCalendarDay);
-        textView.setText(String.valueOf(dateOfMonth));
+        TextView txtSingleDay = (TextView) view.findViewById(R.id.singleCalendarDay);
+        txtSingleDay.setText(String.valueOf(dateOfMonth));
+
+        TextView txtEvent = (TextView) view.findViewById(R.id.eventID);
+
+        Calendar eventCal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        ArrayList<String> eventArrayList = new ArrayList<>();
+
+        IntStream.range(0,eventsList.size()).forEach(i -> {
+            try {
+                eventCal.setTime(simpleDateFormat.parse(eventsList.get(i).getDATE()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if(day == eventCal.get(Calendar.DAY_OF_MONTH)
+            && month == eventCal.get(Calendar.MONTH) + 1
+            && year == eventCal.get(Calendar.YEAR)){
+                eventArrayList.add(eventsList.get(i).getEVENT());
+                txtEvent.setText(eventArrayList.size() + " events");
+            }
+
+        });
+
+
         return view;
     }
 
