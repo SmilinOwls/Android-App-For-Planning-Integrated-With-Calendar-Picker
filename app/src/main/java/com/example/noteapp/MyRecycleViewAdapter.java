@@ -1,9 +1,11 @@
 package com.example.noteapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,12 +25,14 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyRecycleViewAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView eventDate, eventName, eventTime;
+        Button eventDelete;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             eventDate = itemView.findViewById(R.id.eventDate);
             eventName = itemView.findViewById(R.id.eventName);
             eventTime = itemView.findViewById(R.id.eventTime);
+            eventDelete = itemView.findViewById(R.id.eventDelete);
         }
     }
 
@@ -47,6 +51,19 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyRecycleViewAdap
         holder.eventName.setText(events.getEVENT());
         holder.eventDate.setText(events.getDATE());
         holder.eventTime.setText(events.getTIME());
+        holder.eventDelete.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View v) {
+                DBSelector dbSelector;
+                dbSelector = new DBSelector(context);
+                dbSelector.DeleteEvent(events.getEVENT(),events.getDATE(),events.getTIME(),dbSelector.getWritableDatabase());
+                dbSelector.close();
+                eventsArrayList.remove(events);
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
