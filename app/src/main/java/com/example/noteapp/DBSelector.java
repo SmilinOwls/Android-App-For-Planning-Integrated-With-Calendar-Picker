@@ -58,4 +58,9 @@ public class DBSelector extends SQLiteOpenHelper {
         return sqLiteDatabase.query(DBDefinition.tbNAME,colTable, DBDefinition.MONTH + "=? and " + DBDefinition.YEAR + "=?", new String[]{month,year},null,null,null);
     }
 
+    public void DeleteEvent(String name, String date, String time, SQLiteDatabase sqLiteDatabase){
+        String clause = String.format("%s = ? and %s = ? and %s = ?",DBDefinition.EVENT,DBDefinition.DATE,DBDefinition.TIME);
+        sqLiteDatabase.delete(DBDefinition.tbNAME,clause,new String[]{name,date,time});
+    }
+
 }
