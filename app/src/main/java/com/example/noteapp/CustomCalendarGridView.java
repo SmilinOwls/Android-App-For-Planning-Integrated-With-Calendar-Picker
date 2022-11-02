@@ -171,7 +171,6 @@ public class CustomCalendarGridView extends LinearLayout {
 
                 RecyclerView recyclerView = eventShowView.findViewById(R.id.eventDisplay);
                 recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-                recyclerView.setHasFixedSize(true);
 
                 ArrayList<Events> arrayList = eventsListOfDate(simpleDateFormat.format(dateList.get(position)));
 
