@@ -14,6 +14,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/calendar_layout.xml" value="0.165" />
         <entry key="app/src/main/res/layout/event_dislay_layout.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/event_single_display.xml" value="0.1911231884057971" />
         <entry key="app/src/main/res/layout/item_calendar_layout.xml" value="0.165" />
         <entry key="app/src/main/res/layout/new_event_layout.xml" value="0.1" />
       </map>
