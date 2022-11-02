@@ -1,32 +1,56 @@
 package com.example.noteapp;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyRecycleViewAdapter extends RecyclerView.Adapter {
+import java.util.ArrayList;
+
+public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyRecycleViewAdapter.MyViewHolder> {
+
+    Context context;
+    ArrayList<Events> eventsArrayList;
+
+    public MyRecycleViewAdapter(Context context, ArrayList<Events> eventsArrayList) {
+        this.context = context;
+        this.eventsArrayList = eventsArrayList;
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
+        TextView eventDate, eventName, eventTime;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            eventDate = itemView.findViewById(R.id.eventDate);
+            eventName = itemView.findViewById(R.id.eventName);
+            eventTime = itemView.findViewById(R.id.eventTime);
         }
     }
+
+
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_single_display,null);
+
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Events events = eventsArrayList.get(position);
+        holder.eventName.setText(events.getEVENT());
+        holder.eventDate.setText(events.getDATE());
+        holder.eventTime.setText(events.getTIME());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return eventsArrayList.size();
     }
 }

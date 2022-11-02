@@ -20,6 +20,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -126,7 +128,7 @@ public class CustomCalendarGridView extends LinearLayout {
 
                 eventDone.setOnClickListener(v -> {
                     // Save event which has been done
-                    // then store it in SQLite database
+                    // then store it in SQLite databas
                     Date selectedDate = dateList.get(position);
                     dbSelector = new DBSelector(context);
                     dbSelector.SaveEvent(eventName.getText().toString(),eventTime.getText().toString(),simpleDateFormat.format(selectedDate),monthFormat.format(selectedDate),yearFormat.format(selectedDate),dbSelector.getWritableDatabase());
@@ -146,9 +148,38 @@ public class CustomCalendarGridView extends LinearLayout {
                 alertDialog.getWindow().setAttributes(lp);
             }
         });
+
+        // When the single day cell is on long clicked, a dialog
+        // will show and tell what events are going on
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            AlertDialog alertDialog;
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setCancelable(true);
+
+                final View eventShowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_display_layout,null);
+                builder.setView(eventShowView);
+
+                RecyclerView recyclerView = eventShowView.findViewById(R.id.eventDisplay);
+                recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+                recyclerView.setHasFixedSize(true);
+
+                ArrayList<Events> arrayList = eventsListOfDate(simpleDateFormat.format(dateList.get(position)));
+
+                MyRecycleViewAdapter myRecycleViewAdapter = new MyRecycleViewAdapter(eventShowView.getContext(),arrayList);
+                recyclerView.setAdapter(myRecycleViewAdapter);
+                myRecycleViewAdapter.notifyDataSetChanged();
+
+                alertDialog = builder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
     }
 
-    // Initialise the current date, then
+    // Reload or initialise the current date, then
     // updating it to the new month on changed
     // by clicking next or previous button
     protected void updateCalendar(){
@@ -171,6 +202,35 @@ public class CustomCalendarGridView extends LinearLayout {
         gridView.setAdapter(myArrayAdapter);
     }
 
+    // list of events which all takes place in a single date
+    protected ArrayList<Events> eventsListOfDate(String date){
+        ArrayList<Events> arrayList = new ArrayList<>();
+
+        dbSelector = new DBSelector(context);
+        Cursor cursor = dbSelector.ReadEvent(date,dbSelector.getReadableDatabase());
+        while (cursor.moveToNext()){
+            @SuppressLint("Range")
+            String EVENT = cursor.getString(cursor.getColumnIndex(DBDefinition.EVENT));
+            @SuppressLint("Range")
+            String TIME = cursor.getString(cursor.getColumnIndex(DBDefinition.TIME));
+            @SuppressLint("Range")
+            String DATE = cursor.getString(cursor.getColumnIndex(DBDefinition.DATE));
+            @SuppressLint("Range")
+            String MONTH = cursor.getString(cursor.getColumnIndex(DBDefinition.MONTH));
+            @SuppressLint("Range")
+            String YEAR = cursor.getString(cursor.getColumnIndex(DBDefinition.YEAR));
+
+            Events event = new Events(EVENT,TIME,DATE,MONTH,YEAR);
+            arrayList.add(event);
+        }
+
+        cursor.close();
+        dbSelector.close();
+
+        return arrayList;
+    }
+
+    // list of events which all takes place in a month
     protected void eventsListOfMonth(String month, String year){
         eventsList.clear();
         dbSelector = new DBSelector(context);

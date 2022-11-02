@@ -97,8 +97,7 @@ public class MyArrayAdapter extends ArrayAdapter {
             // Do Nothing
         }
 
-        TextView txtSingleDay = (TextView) view.findViewById(R.id.singleCalendarDay);
-        txtSingleDay.setText(String.valueOf(dateOfMonth));
+        templateDate.setText(String.valueOf(dateOfMonth));
 
         TextView txtEvent = (TextView) view.findViewById(R.id.eventID);
 
