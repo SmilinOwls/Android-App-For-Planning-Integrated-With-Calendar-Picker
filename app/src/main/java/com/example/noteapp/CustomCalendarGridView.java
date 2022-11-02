@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -138,6 +139,12 @@ public class CustomCalendarGridView extends LinearLayout {
 
                 alertDialog = builder.create();
                 alertDialog.setCanceledOnTouchOutside(true);
+                alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        updateCalendar();
+                    }
+                });
 
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(alertDialog.getWindow().getAttributes());
@@ -174,6 +181,13 @@ public class CustomCalendarGridView extends LinearLayout {
 
                 alertDialog = builder.create();
                 alertDialog.show();
+
+                alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        updateCalendar();
+                    }
+                });
                 return true;
             }
         });
