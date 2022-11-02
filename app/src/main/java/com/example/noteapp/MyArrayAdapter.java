@@ -87,7 +87,14 @@ public class MyArrayAdapter extends ArrayAdapter {
 
         if(curYear == year && curMonth == month && curDay == day){
             templateDate.setBackgroundResource(R.drawable.current_date);
-            templateDate.setTextColor(getContext().getResources().getColor(R.color.white));
+            templateDate.setTextColor(getContext().getResources().getColor(R.color.light_pink));
+        }
+
+        // Set red color if day of week is Sunday
+        if(calendar.get(Calendar.DAY_OF_WEEK) == 1){
+            templateDate.setTextColor(getContext().getResources().getColor(R.color.red));
+        } else{
+            // Do Nothing
         }
 
         TextView txtSingleDay = (TextView) view.findViewById(R.id.singleCalendarDay);
@@ -107,7 +114,7 @@ public class MyArrayAdapter extends ArrayAdapter {
             }
 
             if(day == eventCal.get(Calendar.DAY_OF_MONTH)
-            && month == eventCal.get(Calendar.MONTH) + 1
+            && (month == eventCal.get(Calendar.MONTH) + 1)
             && year == eventCal.get(Calendar.YEAR)){
                 eventArrayList.add(eventsList.get(i).getEVENT());
                 txtEvent.setText(eventArrayList.size() + " events");

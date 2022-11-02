@@ -35,7 +35,7 @@ public class CustomCalendarGridView extends LinearLayout {
     ImageButton nextBtn, previousBtn;
     TextView currentDate;
     GridView gridView;
-    private static int MAX_CALENDAR_DAYS = 42; // = 7(columns)*6(rows)
+    private static final int MAX_CALENDAR_DAYS = 42; // = 7(columns)*6(rows)
     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
     Context context;
 
