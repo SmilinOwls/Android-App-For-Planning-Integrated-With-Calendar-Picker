@@ -7,12 +7,14 @@ package com.example.noteapp;
 
 public class DBDefinition {
     public static final String dbNAME = "dbEVENTS";
-    public static final int dbVERSION = 1;
+    public static final int dbVERSION = 2;
 
     public static final String tbNAME = "tbEVENTS";
+    public static final String NOTIFICATION = "NOTIFICATION";
+    public static final String ID = "ID";
     public static final String EVENT = "EVENT";
-    public static final String TIME = "TIME";
-    public static final String DATE = "DATE";
+    public static final String TIME = "TIME"; // K:mm
+    public static final String DATE = "DATE"; // yyyy-MM-dd
     public static final String MONTH = "MONTH";
     public static final String YEAR = "YEAR";
 }
