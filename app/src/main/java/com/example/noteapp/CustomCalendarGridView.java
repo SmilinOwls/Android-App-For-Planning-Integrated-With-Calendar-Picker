@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
@@ -153,7 +153,6 @@ public class CustomCalendarGridView extends LinearLayout {
                         cal.setTime(selectedDate);
                         cal.set(Calendar.HOUR_OF_DAY,calendar1.get(Calendar.HOUR_OF_DAY));
                         cal.set(Calendar.MINUTE,calendar1.get(Calendar.MINUTE));
-
 
                         String event_name = eventName.getText().toString(),
                                 event_time = eventTime.getText().toString();
@@ -309,14 +308,15 @@ public class CustomCalendarGridView extends LinearLayout {
 
     @SuppressLint("Range")
     protected int getEventID(String date, String time, String event){
-        int ID = 0;
+        AtomicInteger ID = new AtomicInteger();
         dbSelector = new DBSelector(context);
         Cursor cursor = dbSelector.ReadEventIDAndNotify(event,date,time,dbSelector.getReadableDatabase());
         while (cursor.moveToNext()){
-            ID = cursor.getInt(cursor.getColumnIndex(DBDefinition.ID));
+            ID.set(cursor.getInt(cursor.getColumnIndex(DBDefinition.ID)));
         }
+
         dbSelector.close();
-        return ID;
+        return ID.get();
     }
 
     protected void alertRelease(Calendar calendar, int id, String event, String time){
@@ -330,7 +330,7 @@ public class CustomCalendarGridView extends LinearLayout {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,id,intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.get(Calendar.MILLISECOND),pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.get(Calendar.MILLISECOND),pendingIntent);
 
     }
 }

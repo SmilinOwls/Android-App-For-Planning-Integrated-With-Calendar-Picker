@@ -173,10 +173,14 @@ public class MyRecycleViewAdapter extends RecyclerView.Adapter<MyRecycleViewAdap
         bundle.putInt("ID",id);
         bundle.putString("TIME",time);
         intent.putExtras(bundle);
+        Calendar c = Calendar.getInstance();
 
+        c.setTimeInMillis(System.currentTimeMillis());
+        c.set(Calendar.HOUR_OF_DAY, 15);
+        c.set(Calendar.MINUTE, 56);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,id,intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.get(Calendar.MILLISECOND),pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.get(Calendar.MILLISECOND),pendingIntent);
     }
 
     protected void alertCancel(int id){

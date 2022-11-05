@@ -26,14 +26,15 @@ public class MyAlertBroadcast extends BroadcastReceiver {
         String EVENT = bundle.getString("EVENT","No Event");
         String TIME = bundle.getString("TIME","00:00");
         int ID = bundle.getInt("ID",0);
+        //Toast.makeText(context,String.valueOf(ID),Toast.LENGTH_LONG).show();
 
         Intent intent1 = new Intent(context,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,ID,intent1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 
-        String channelId = "notify_id";
-        CharSequence channelName = "notify_name";
-        String channelDescription = "notify_description";
+        String channelId = "Android_20_3";
+        CharSequence channelName = "Notification System";
+        String channelDescription = "Alarm Not To Dismiss Event";
         int importance = NotificationManager.IMPORTANCE_HIGH;
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
