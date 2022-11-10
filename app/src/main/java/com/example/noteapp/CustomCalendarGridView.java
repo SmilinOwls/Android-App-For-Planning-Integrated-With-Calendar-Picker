@@ -1,6 +1,7 @@
 package com.example.noteapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -28,6 +29,13 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +56,7 @@ public class CustomCalendarGridView extends LinearLayout {
     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
     Context context;
 
+    private final int PLACE_PICKER_REQUEST = 1;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy",Locale.ENGLISH);
     SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM",Locale.ENGLISH);
@@ -96,6 +105,8 @@ public class CustomCalendarGridView extends LinearLayout {
             Button eventDone;
             AlertDialog alertDialog;
             CheckBox eventAlert;
+            EditText eventPlace;
+            ImageButton eventPlaceSelector;
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -112,6 +123,7 @@ public class CustomCalendarGridView extends LinearLayout {
                 IntStream.range(0, parent.getChildCount())
                         .<TextView>mapToObj(i -> parent.getChildAt(i).findViewById(R.id.singleCalendarDay))
                         .forEach(textView -> textView.setBackgroundResource(R.drawable.default_state_item));
+
                 view.findViewById(R.id.singleCalendarDay).setBackgroundResource(R.drawable.pressed_state_item);
                 lastClicked = position;
 
@@ -132,14 +144,9 @@ public class CustomCalendarGridView extends LinearLayout {
                     timePickerDialog.show();
                 });
 
+
                 Date selectedDate = dateList.get(position);
 
-                eventAlert.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
 
                 eventDone.setOnClickListener(v -> {
                     // Save event which has been done
@@ -228,6 +235,16 @@ public class CustomCalendarGridView extends LinearLayout {
                 return true;
             }
         });
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PLACE_PICKER_REQUEST){
+            if(resultCode == Activity.RESULT_OK){
+                Place place = PlacePicker.getPlace(context,data);
+                currentDate.setText(place.getAddress());
+            }
+        }
     }
 
     // Reload or initialise the current date, then
