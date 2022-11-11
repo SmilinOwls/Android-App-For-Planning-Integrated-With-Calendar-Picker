@@ -54,11 +54,13 @@ public class MyAlertBroadcast extends BroadcastReceiver {
         Notification notification = new NotificationCompat.Builder(context,channelId)
                 .setContentTitle(TIME)
                 .setContentText(EVENT)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setChannelId(channelId)
                 .setGroup("calendar_view_group")
-                .setDeleteIntent(pendingIntent)
+                .setContentIntent(pendingIntent)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setAutoCancel(true)
                 .build();
 
         NotificationManagerCompat.from(context).notify(ID,notification);

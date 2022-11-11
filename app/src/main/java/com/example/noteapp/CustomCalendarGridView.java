@@ -145,6 +145,7 @@ public class CustomCalendarGridView extends LinearLayout {
                 });
 
 
+
                 Date selectedDate = dateList.get(position);
 
 
@@ -163,7 +164,6 @@ public class CustomCalendarGridView extends LinearLayout {
 
                         String event_name = eventName.getText().toString(),
                                 event_time = eventTime.getText().toString();
-
                         alertRelease(cal,getEventID(simpleDateFormat.format(selectedDate),event_time,event_name),event_name,event_time);
                     }
                     else{
@@ -337,17 +337,15 @@ public class CustomCalendarGridView extends LinearLayout {
     }
 
     protected void alertRelease(Calendar calendar, int id, String event, String time){
-
         Intent intent = new Intent(context.getApplicationContext(),MyAlertBroadcast.class);
         Bundle bundle = new Bundle();
         bundle.putString("EVENT",event);
         bundle.putInt("ID",id);
         bundle.putString("TIME",time);
         intent.putExtras(bundle);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,id,intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.get(Calendar.MILLISECOND),pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
 
     }
 }
